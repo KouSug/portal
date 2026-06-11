@@ -1,0 +1,35 @@
+# Integrated Portal Project Context
+
+## Overview
+This repository (`portal`) acts as a unified menu to integrate two separate applications:
+- **Cash Management** (`cash-management` submodule)
+- **Task Management** (`task-management` submodule)
+
+## Architecture & Authentication
+1. **Authentication:** The `menu-app` (Portal) handles Google Login using `@react-oauth/google` and stores the Access Token in `sessionStorage`.
+2. **Iframe Integration:** The portal displays the child applications within `<iframe>` elements to keep them accessible from a single UI.
+3. **Token Passing:** To share the Google authentication state with the child apps (bypassing strict cross-origin iframe cookie limitations), the portal passes the access token via URL query parameters (`?token={access_token}`).
+4. **Token Consumption:** The child apps read the `?token=` parameter on initialization, save it to their own session/local storage, and rewrite the URL (using `history.replaceState`) to hide the token from the user's address bar.
+
+## Child Applications
+### 1. Cash Management
+- **Framework:** Next.js
+- **Local Port:** `3001`
+- **Production URL:** `https://kousug.github.io/cash-management/`
+
+### 2. Task Management
+- **Framework:** Vite / Vanilla JS
+- **Local Port:** `3002`
+- **Production URL:** `https://kousug.github.io/task-management/`
+- **Embed Mode:** Supports a special query parameter `?embed=calendar`. When provided, the app hides its header, toolbar, and floating action buttons, rendering only the calendar view. The portal's dashboard uses this feature to display a seamless calendar widget.
+
+## Local Development Setup
+- The root directory contains a `package.json` that uses `concurrently` to start all three applications simultaneously.
+- **Start Command:** `npm start` (run in the root directory).
+
+## Deployment & Hosting
+- **Hosting:** The portal is deployed to GitHub Pages at `https://kousug.github.io/portal/`.
+- **Vite Config:** `menu-app/vite.config.ts` requires `base: '/portal/'` for correct asset loading.
+- **Deploy Process:** Deployment is handled via the `gh-pages` npm package.
+- **Deploy Command:** `cd menu-app && npm run deploy`
+- **Google Cloud Security:** The Google Cloud Console "Authorized JavaScript origins" MUST include `https://kousug.github.io` for login to work in production.
