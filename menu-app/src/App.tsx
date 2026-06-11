@@ -88,8 +88,8 @@ function App() {
   }
 
   const getIframeSrc = () => {
-    if (activeApp === 'cash') return `http://localhost:3001/?token=${token}`
-    if (activeApp === 'task') return `http://localhost:3002/?token=${token}`
+    if (activeApp === 'cash') return `https://kousug.github.io/cash-management/?token=${token}`
+    if (activeApp === 'task') return `https://kousug.github.io/task-management/?token=${token}`
     return ''
   }
 
@@ -229,7 +229,7 @@ function App() {
 
               <div className="dashboard-widget" style={{ marginTop: '3rem', height: '800px' }}>
                 <iframe
-                  src={`http://localhost:3002/?token=${token}&embed=calendar`}
+                  src={`https://kousug.github.io/task-management/?token=${token}&embed=calendar`}
                   style={{ width: '100%', height: '100%', border: 'none', borderRadius: '1.5rem', background: 'white', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}
                   title="Task Calendar Widget"
                 />
