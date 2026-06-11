@@ -1,0 +1,6 @@
+[submodule "cash-management"]
+	path = cash-management
+	url = https://github.com/KouSug/cash-management.git
+[submodule "task-management"]
+	path = task-management
+	url = https://github.com/KouSug/task-management.git

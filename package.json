@@ -1,0 +1,19 @@
+{
+  "name": "integrated-menu",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "concurrently \"npm run start-menu\" \"npm run start-cash\" \"npm run start-task\"",
+    "start-menu": "cd menu-app && npm run dev",
+    "start-cash": "cd cash-management && npm run dev",
+    "start-task": "cd task-management && npm run dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "concurrently": "^10.0.3"
+  }
+}
