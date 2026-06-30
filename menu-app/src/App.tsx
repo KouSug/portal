@@ -54,8 +54,7 @@ function App() {
       sessionStorage.setItem('menu_access_token', accessToken)
       fetchProfile(accessToken)
     },
-    scope: 'https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/userinfo.profile',
-    prompt: 'consent'
+    scope: 'https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/userinfo.profile'
   })
 
   const logout = () => {
