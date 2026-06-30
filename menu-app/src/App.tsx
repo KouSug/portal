@@ -100,6 +100,24 @@ function App() {
 
   return (
     <div className="app-container">
+      {/* Mobile Top Header */}
+      {profile && (
+        <header className="mobile-header">
+          <div className="mobile-brand">
+            <Boxes className="brand-icon" size={24} />
+            <span className="brand-text" style={{ color: 'white' }}>ポータル</span>
+          </div>
+          <button 
+            className="btn-logout" 
+            onClick={logout} 
+            title="ログアウト"
+            style={{ margin: 0, padding: '0.5rem' }}
+          >
+            <LogOut size={20} />
+          </button>
+        </header>
+      )}
+
       {/* Sidebar */}
       <motion.aside 
         className={`sidebar glass ${isSidebarOpen ? '' : 'collapsed'}`}

@@ -414,3 +414,130 @@ body {
   width: 24px;
   height: 24px;
 }
+
+/* --- Mobile Optimization --- */
+@media (max-width: 768px) {
+  .app-container {
+    flex-direction: column;
+  }
+
+  .mobile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background: var(--card-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--card-border);
+    z-index: 20;
+    flex-shrink: 0;
+  }
+
+  .mobile-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+
+  /* Bottom Navigation */
+  .sidebar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 70px;
+    flex-direction: row;
+    padding: 0;
+    border-right: none;
+    border-top: 1px solid var(--card-border);
+    z-index: 50;
+    background: var(--bg-color); /* slightly more solid */
+  }
+
+  .sidebar.collapsed {
+    width: 100%; /* Ignore collapsed state on mobile */
+    padding: 0;
+  }
+
+  .sidebar-header, .user-profile {
+    display: none !important;
+  }
+
+  .nav-links {
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    padding: 0 0.5rem;
+    gap: 0;
+  }
+
+  .nav-item {
+    flex-direction: column;
+    padding: 0.5rem;
+    gap: 0.25rem;
+    border-radius: 0.5rem;
+    width: auto;
+    justify-content: center !important;
+  }
+
+  .nav-item-text {
+    display: block !important;
+    font-size: 0.65rem;
+    white-space: nowrap;
+    margin: 0;
+  }
+
+  .nav-icon {
+    width: 20px;
+    height: 20px;
+    margin: 0;
+  }
+
+  .main-content {
+    padding-bottom: 70px; /* Space for bottom nav */
+  }
+
+  .dashboard {
+    padding: 1.5rem;
+  }
+
+  .welcome-title {
+    font-size: 1.5rem;
+  }
+
+  .app-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .app-card {
+    padding: 1.5rem;
+  }
+
+  .card-title {
+    font-size: 1.25rem;
+  }
+
+  .dashboard-widget {
+    height: 600px !important; /* Slightly smaller calendar on mobile */
+  }
+
+  .login-card {
+    padding: 2rem 1.5rem;
+    width: 95%;
+  }
+
+  .login-title {
+    font-size: 1.5rem;
+  }
+}
+
+@media (min-width: 769px) {
+  .mobile-header {
+    display: none;
+  }
+}
