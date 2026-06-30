@@ -24,6 +24,11 @@ function App() {
   const [activeApp, setActiveApp] = useState<'dashboard' | 'cash' | 'task'>('dashboard')
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
 
+  const handleNavClick = (app: 'dashboard' | 'cash' | 'task') => {
+    setActiveApp(app)
+    setIsSidebarOpen(false)
+  }
+
   const logout = useCallback(() => {
     googleLogout()
     setToken(null)
@@ -171,7 +176,7 @@ function App() {
         <div className="nav-links">
           <button 
             className={`nav-item ${activeApp === 'dashboard' ? 'active' : ''}`}
-            onClick={() => setActiveApp('dashboard')}
+            onClick={() => handleNavClick('dashboard')}
             title="ダッシュボード"
             style={{ justifyContent: isSidebarOpen ? 'flex-start' : 'center' }}
           >
@@ -180,7 +185,7 @@ function App() {
           </button>
           <button 
             className={`nav-item ${activeApp === 'cash' ? 'active' : ''}`}
-            onClick={() => setActiveApp('cash')}
+            onClick={() => handleNavClick('cash')}
             title="資金管理 (Cash)"
             style={{ justifyContent: isSidebarOpen ? 'flex-start' : 'center' }}
           >
@@ -189,7 +194,7 @@ function App() {
           </button>
           <button 
             className={`nav-item ${activeApp === 'task' ? 'active' : ''}`}
-            onClick={() => setActiveApp('task')}
+            onClick={() => handleNavClick('task')}
             title="タスク管理 (Task)"
             style={{ justifyContent: isSidebarOpen ? 'flex-start' : 'center' }}
           >
