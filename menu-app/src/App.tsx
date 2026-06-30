@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useGoogleLogin, googleLogout } from '@react-oauth/google'
 import { motion, AnimatePresence } from 'framer-motion'
 import { 
@@ -24,16 +24,15 @@ function App() {
   const [activeApp, setActiveApp] = useState<'dashboard' | 'cash' | 'task'>('dashboard')
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
 
-  useEffect(() => {
-    // Check session storage on load
-    const savedToken = sessionStorage.getItem('menu_access_token')
-    if (savedToken) {
-      setToken(savedToken)
-      fetchProfile(savedToken)
-    }
+  const logout = useCallback(() => {
+    googleLogout()
+    setToken(null)
+    setProfile(null)
+    setActiveApp('dashboard')
+    sessionStorage.removeItem('menu_access_token')
   }, [])
 
-  const fetchProfile = async (accessToken: string) => {
+  const fetchProfile = useCallback(async (accessToken: string) => {
     try {
       const res = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
         headers: { Authorization: `Bearer ${accessToken}` }
@@ -41,11 +40,43 @@ function App() {
       if (res.ok) {
         const data = await res.json()
         setProfile(data)
+      } else {
+        console.warn('Token invalid or expired. Logging out.')
+        logout()
       }
     } catch (err) {
       console.error('Failed to fetch profile', err)
     }
-  }
+  }, [logout])
+
+  useEffect(() => {
+    const savedToken = sessionStorage.getItem('menu_access_token')
+    if (savedToken) {
+      setToken(savedToken)
+      fetchProfile(savedToken)
+    }
+  }, [fetchProfile])
+
+  useEffect(() => {
+    if (token) {
+      // Check token validity every 10 minutes
+      const interval = setInterval(() => {
+        fetchProfile(token)
+      }, 10 * 60 * 1000)
+      return () => clearInterval(interval)
+    }
+  }, [token, fetchProfile])
+
+  useEffect(() => {
+    // Listen for token_expired messages from iframes
+    const handleMessage = (event: MessageEvent) => {
+      if (event.data === 'token_expired') {
+        logout()
+      }
+    }
+    window.addEventListener('message', handleMessage)
+    return () => window.removeEventListener('message', handleMessage)
+  }, [logout])
 
   const login = useGoogleLogin({
     onSuccess: (codeResponse) => {
@@ -56,14 +87,6 @@ function App() {
     },
     scope: 'https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/userinfo.profile'
   })
-
-  const logout = () => {
-    googleLogout()
-    setToken(null)
-    setProfile(null)
-    setActiveApp('dashboard')
-    sessionStorage.removeItem('menu_access_token')
-  }
 
   if (!token) {
     return (
